@@ -1,0 +1,19 @@
+{
+  "name": "futurelink",
+  "version": "0.1.0",
+  "description": "Predicts when a link is about to be clicked",
+  "main": "futurelink.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/samknows/futurelink.git"
+  },
+  "author": "Callum Macrae <callum@samknows.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/samknows/futurelink/issues"
+  },
+  "homepage": "https://github.com/samknows/futurelink#readme"
+}

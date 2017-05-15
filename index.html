@@ -1,0 +1,103 @@
+<!doctype html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<meta name="viewport"
+				content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+	<meta http-equiv="X-UA-Compatible" content="ie=edge">
+	<title>futurelink demo</title>
+
+	<style>
+		body {
+			font-family: sans-serif;
+			text-align: center;
+		}
+
+		h1 {
+			margin-top: 100px;
+			margin-bottom: 0;
+
+			font-size: 80px;
+			font-weight: normal;
+		}
+
+		h2 {
+			font-size: 40px;
+			font-weight: normal;
+		}
+
+		p {
+			font-size: 25px;
+		}
+
+		.results {
+			display: none;
+			margin-top: 60px;
+			padding: 40px 60px;
+
+			background-color: lightblue;
+			border: 4px red solid;
+		}
+
+		.results p {
+			margin-top: 10px;
+			margin-bottom: 10px;
+		}
+
+		.big-if-true {
+			font-size: 100px;
+		}
+	</style>
+</head>
+<body>
+	<h1>futurelink</h1>
+	<h2>literally predicts the future</h2>
+
+	<p>(click the link)</p>
+
+	<p>→ <a href class="demo-link">click me!</a> ←</p>
+
+	<div class="results">
+		<p>the click event was fired at <span class="click-time"></span></p>
+		<p>the hover event was fired <span class="hover-time"></span>ms before that</p>
+		<p>futurelink guessed you were going to click on the link</p>
+		<p class="big-if-true"><span class="future-time"></span>ms</p>
+		<p>before that</p>
+	</div>
+
+
+	<script src="futurelink.js"></script>
+
+	<script>
+		var demoLinkEl = document.querySelector('.demo-link');
+		var resultsEl = document.querySelector('.results');
+
+		var clickTimeEl = resultsEl.querySelector('.click-time');
+		var hoverTimeEl = resultsEl.querySelector('.hover-time');
+		var futureTimeEl = resultsEl.querySelector('.future-time');
+
+		var times = {};
+
+		futurelink({
+			links: [demoLinkEl],
+			future: function () {
+				times.future = Date.now();
+			},
+			hover: function () {
+				times.hover = Date.now();
+			}
+		});
+
+		demoLinkEl.addEventListener('click', function (e) {
+			e.preventDefault();
+			times.click = Date.now();
+
+			resultsEl.style.display = 'inline-block';
+
+			clickTimeEl.innerHTML = new Date(times.click).toISOString().slice(11, -1);
+			hoverTimeEl.innerHTML = times.click - times.hover;
+			futureTimeEl.innerHTML = times.click - times.future;
+		});
+	</script>
+</body>
+</html>
