@@ -47,15 +47,43 @@
 		.big-if-true {
 			font-size: 100px;
 		}
+
+		.mobile-only {
+			display: none;
+		}
+
+		iframe {
+			margin-top: 40px;
+		}
+
+		@media all and (max-width: 480px) {
+			.not-mobile {
+				display: none;
+			}
+
+			.mobile-only {
+				display: block;
+			}
+
+			h1 {
+				font-size: 60px;
+			}
+
+			h2 {
+				font-size: 30px;
+			}
+		}
 	</style>
 </head>
 <body>
 	<h1>futurelink</h1>
 	<h2>literally predicts the future</h2>
+	<h2 class="mobile-only">and literally doesn't work on mobile :(</h2>
+	<h2 class="mobile-only">(try from a desktop)</h2>
 
-	<p>(click the link)</p>
+	<p class="not-mobile">(click the link)</p>
 
-	<p>→ <a href class="demo-link">click me!</a> ←</p>
+	<p class="not-mobile">→ <a href class="demo-link">click me!</a> ←</p>
 
 	<div class="results">
 		<p>the click event was fired at <span class="click-time"></span></p>
@@ -64,6 +92,10 @@
 		<p class="big-if-true"><span class="future-time"></span>ms</p>
 		<p>before the click event</p>
 	</div>
+
+	<p>
+		<iframe src="https://ghbtns.com/github-btn.html?user=samknows&repo=futurelink&type=star&count=true&size=large" frameborder="0" scrolling="0" width="120px" height="30px"></iframe>
+	</p>
 
 
 	<script src="futurelink.js"></script>
@@ -96,8 +128,8 @@
 			demoLinkEl.parentElement.style.display = 'none';
 
 			clickTimeEl.innerHTML = new Date(times.click).toISOString().slice(11, -1);
-			hoverTimeEl.innerHTML = times.click - times.hover;
-			futureTimeEl.innerHTML = times.click - times.future;
+			hoverTimeEl.innerHTML = (times.click - times.hover) || 0;
+			futureTimeEl.innerHTML = (times.click - times.future) || 0;
 		});
 	</script>
 </body>
