@@ -135,7 +135,6 @@ function futurelink(options) {
 		var goingToY = point.y + length * Math.cos(direction);
 
 		options.links.forEach((link) => {
-			return;
 			if (!futureDone.includes(link) && testLink(link)) {
 				futureDone.push(link);
 
