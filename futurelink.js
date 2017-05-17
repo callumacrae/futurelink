@@ -43,6 +43,10 @@ function futurelink(options) {
 		options.links = Array.from(options.links);
 	}
 
+	if (typeof options.hoverDelay === 'undefined' || options.hoverDelay === true) {
+		options.hoverDelay = 100;
+	}
+
 	var futureDone = [];
 	var hoverDone = [];
 	var clickDone = [];
@@ -58,16 +62,30 @@ function futurelink(options) {
 		predict(point, mouseData);
 	});
 
-	if (typeof options.hover === 'function') {
-		document.addEventListener('mouseover', function (e) {
-			var element = e.target;
+	document.addEventListener('mouseover', function (e) {
+		var element = e.target;
 
-			if (!hoverDone.includes(element) && options.links.includes(e.target)) {
-				hoverDone.push(element);
-				options.hover(element, e);
-			}
-		});
-	}
+		if (!options.links.includes(e.target)) {
+			return;
+		}
+
+		if (typeof options.hover === 'function' && !hoverDone.includes(element)) {
+			hoverDone.push(element);
+			options.hover(element, e);
+		}
+
+		// After 100ms (or configured) of hover, fire future event if predict() didn't work
+		if (typeof options.hoverDelay === 'number' && !futureDone.includes(element) && typeof options.future === 'function') {
+			var timeout = setTimeout(function () {
+				futureDone.push(element);
+				options.future(element);
+			}, options.hoverDelay);
+
+			e.target.addEventListener('mouseout', function () {
+				clearTimeout(timeout);
+			});
+		}
+	});
 
 	if (typeof options.click === 'function') {
 		document.addEventListener('click', function (e) {
@@ -117,6 +135,7 @@ function futurelink(options) {
 		var goingToY = point.y + length * Math.cos(direction);
 
 		options.links.forEach((link) => {
+			return;
 			if (!futureDone.includes(link) && testLink(link)) {
 				futureDone.push(link);
 
