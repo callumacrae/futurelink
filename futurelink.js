@@ -30,7 +30,19 @@ var pointUtils = {
 function futurelink(options) {
 	var mouseData = [];
 
-	var links = Array.from(options.links);
+	if (typeof options === 'function') {
+		options = {
+			links: true,
+			future: options
+		};
+	}
+
+	if (options.links === true) {
+		options.links = Array.from(document.querySelectorAll('a'));
+	} else if (!Array.isArray(options.links)) {
+		options.links = Array.from(options.links);
+	}
+
 	var futureDone = [];
 	var hoverDone = [];
 	var clickDone = [];
@@ -50,7 +62,7 @@ function futurelink(options) {
 		document.addEventListener('mouseover', function (e) {
 			var element = e.target;
 
-			if (!hoverDone.includes(element) && links.includes(e.target)) {
+			if (!hoverDone.includes(element) && options.links.includes(e.target)) {
 				hoverDone.push(element);
 				options.hover(element, e);
 			}
@@ -61,7 +73,7 @@ function futurelink(options) {
 		document.addEventListener('click', function (e) {
 			var element = e.target;
 
-			if (!clickDone.includes(element) && links.includes(e.target)) {
+			if (!clickDone.includes(element) && options.links.includes(e.target)) {
 				clickDone.push(element);
 				options.click(element, e);
 			}
@@ -104,7 +116,7 @@ function futurelink(options) {
 		var goingToX = point.x + length * Math.sin(direction);
 		var goingToY = point.y + length * Math.cos(direction);
 
-		links.forEach((link) => {
+		options.links.forEach((link) => {
 			if (!futureDone.includes(link) && testLink(link)) {
 				futureDone.push(link);
 
@@ -149,3 +161,6 @@ function futurelink(options) {
 	}
 }
 
+if (typeof module === 'object') {
+	module.exports = futurelink;
+}
