@@ -65,8 +65,12 @@ function futurelink(options) {
 	document.addEventListener('mouseover', function (e) {
 		var element = e.target;
 
-		if (!options.links.includes(e.target)) {
+		if (!options.links.includes(element)) {
 			return;
+		}
+
+		if (noFuturelink(element)) {
+			return false;
 		}
 
 		if (typeof options.hover === 'function' && !hoverDone.includes(element)) {
@@ -145,6 +149,10 @@ function futurelink(options) {
 		});
 
 		function testLink(link) {
+			if (noFuturelink(link)) {
+				return false;
+			}
+
 			var linkRect = link.getBoundingClientRect();
 
 			return testHorizontal(linkRect.top, linkRect) ||
@@ -176,6 +184,16 @@ function futurelink(options) {
 
 			return (yAtIntersect >= linkRect.top && yAtIntersect <= linkRect.top + linkRect.height);
 		}
+	}
+
+	function noFuturelink(link) {
+		do {
+			if (link.classList.contains('no-futurelink')) {
+				return true;
+			}
+		} while ((link = link.parentElement));
+
+		return false;
 	}
 }
 
