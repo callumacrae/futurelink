@@ -1,6 +1,6 @@
 {
   "name": "futurelink",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Predicts when a link is about to be clicked",
   "main": "futurelink.js",
   "scripts": {
