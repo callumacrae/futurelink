@@ -63,6 +63,10 @@ On samknows.com, it speeds up non-initial page loads by an average of 870ms.
 
 You can see an article about that on the [SamKnows Medium](https://blog.samknows.com/intelligent-page-preloading-with-futurelink-c1de25449dee).
 
+## Usage with frameworks
+
+- [vue-futurelink](https://github.com/SamKnows/vue-futurelink)
+
 ## License
 
 Released under the MIT license.
