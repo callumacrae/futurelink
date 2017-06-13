@@ -55,9 +55,13 @@ futurelink won't look at links that have a `no-futurelink` class on them or one 
 <a href="/bar-foo" class="no-futurelink">It won't tell you about this one either</a>
 ```
 
+## How effective is it
+
+On samknows.com, it speeds up non-initial page loads by an average of 870ms.
+
 ## How does it work?
 
-@todo (I did a little study)
+You can see an article about that on the [SamKnows Medium](https://blog.samknows.com/intelligent-page-preloading-with-futurelink-c1de25449dee).
 
 ## License
 
