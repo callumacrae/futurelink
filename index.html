@@ -110,7 +110,7 @@
 
 		var times = {};
 
-		futurelink({
+		const a = futurelink({
 			links: [demoLinkEl],
 			future: function () {
 				times.future = Date.now();
@@ -130,6 +130,8 @@
 			clickTimeEl.innerHTML = new Date(times.click).toISOString().slice(11, -1);
 			hoverTimeEl.innerHTML = (times.click - times.hover) || 0;
 			futureTimeEl.innerHTML = (times.click - times.future) || 0;
+
+			a();
 		});
 	</script>
 </body>

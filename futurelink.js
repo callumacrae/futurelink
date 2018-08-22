@@ -51,55 +51,66 @@ function futurelink(options) {
 	var hoverDone = [];
 	var clickDone = [];
 
-	document.addEventListener('mousemove', function (e) {
-		var point = {
-			x: e.clientX,
-			y: e.clientY,
-			time: Date.now()
-		};
-		mouseData.push(point);
+	function handleMousemove(e) {
+    var point = {
+      x: e.clientX,
+      y: e.clientY,
+      time: Date.now()
+    };
+    mouseData.push(point);
 
-		predict(point, mouseData);
-	});
+    predict(point, mouseData);
+	}
 
-	document.addEventListener('mouseover', function (e) {
-		var element = e.target;
+  function handleMouseover(e) {
+    var element = e.target;
 
-		if (!options.links.includes(element)) {
-			return;
-		}
+    if (!options.links.includes(element)) {
+      return;
+    }
 
-		if (noFuturelink(element)) {
-			return false;
-		}
+    if (noFuturelink(element)) {
+      return false;
+    }
 
-		if (typeof options.hover === 'function' && !hoverDone.includes(element)) {
-			hoverDone.push(element);
-			options.hover(element, e);
-		}
+    if (typeof options.hover === 'function' && !hoverDone.includes(element)) {
+      hoverDone.push(element);
+      options.hover(element, e);
+    }
 
-		// After 100ms (or configured) of hover, fire future event if predict() didn't work
-		if (typeof options.hoverDelay === 'number' && !futureDone.includes(element) && typeof options.future === 'function') {
-			var timeout = setTimeout(function () {
-				futureDone.push(element);
-				options.future(element);
-			}, options.hoverDelay);
+    // After 100ms (or configured) of hover, fire future event if predict() didn't work
+    if (typeof options.hoverDelay === 'number' && !futureDone.includes(element) && typeof options.future === 'function') {
+      var timeout = setTimeout(function () {
+        futureDone.push(element);
+        options.future(element);
+      }, options.hoverDelay);
 
-			e.target.addEventListener('mouseout', function () {
-				clearTimeout(timeout);
-			});
-		}
-	});
+      e.target.addEventListener('mouseout', function () {
+        clearTimeout(timeout);
+      });
+    }
+  }
+
+  function handleClick(e) {
+    var element = e.target;
+
+    if (!clickDone.includes(element) && options.links.includes(e.target)) {
+      clickDone.push(element);
+      options.click(element, e);
+    }
+	}
+
+  document.addEventListener('mousemove', handleMousemove);
+	document.addEventListener('mouseover', handleMouseover);
 
 	if (typeof options.click === 'function') {
-		document.addEventListener('click', function (e) {
-			var element = e.target;
+		document.addEventListener('click', handleClick);
+	}
 
-			if (!clickDone.includes(element) && options.links.includes(e.target)) {
-				clickDone.push(element);
-				options.click(element, e);
-			}
-		});
+	function teardown() {
+    document.removeEventListener('mousemove', handleMousemove);
+    document.removeEventListener('mouseover', handleMouseover);
+    document.removeEventListener('click', handleClick);
 	}
 
 	function predict(point, data) {
@@ -195,6 +206,8 @@ function futurelink(options) {
 
 		return false;
 	}
+
+	return teardown;
 }
 
 if (typeof module === 'object') {

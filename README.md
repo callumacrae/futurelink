@@ -55,6 +55,20 @@ futurelink won't look at links that have a `no-futurelink` class on them or one 
 <a href="/bar-foo" class="no-futurelink">It won't tell you about this one either</a>
 ```
 
+### Removing futurelink from the page
+
+If you want to completely remove futurelink, it returns a `teardown` function that you can call:
+
+```js
+var teardown = futurelink(options);
+
+// Later…
+
+teardown();
+```
+
+Now the event listeners will be removed and futurelink won't tell you when links are about to be clicked anymore.
+
 ## How effective is it
 
 On samknows.com, it speeds up non-initial page loads by an average of 870ms.
