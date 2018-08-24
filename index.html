@@ -110,7 +110,7 @@
 
 		var times = {};
 
-		const a = futurelink({
+		var teardown = futurelink({
 			links: [demoLinkEl],
 			future: function () {
 				times.future = Date.now();
@@ -131,7 +131,8 @@
 			hoverTimeEl.innerHTML = (times.click - times.hover) || 0;
 			futureTimeEl.innerHTML = (times.click - times.future) || 0;
 
-			a();
+			// This isn't really doing much here, just for testing during development
+			teardown();
 		});
 	</script>
 </body>
